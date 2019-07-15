@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/add"
+        app:elevation="6dp"
+        app:fabSize="mini"
+        app:pressedTranslationZ="12dp" />
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frameholder"
+        >
+        <android.support.design.widget.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:id="@+id/bottomnavigation"
+            app:menu="@menu/bottomnavigation" />
+
+
+    </FrameLayout>
+
+
+
+</FrameLayout>
+<!--
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="horizontal"
+android:minHeight="?attr/windowActionBar"
+android:weightSum="1"
+android:visibility="gone"
+
+    >
+
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:textColor="@android:color/white"
+    android:textSize="18dp"
+    android:layout_weight=".5"
+    android:gravity="center"
+    android:text="Settings"/>
+
+<ImageView
+    android:layout_width="25dp"
+    android:layout_height="25dp"
+    android:layout_weight=".5"
+    android:layout_marginTop="20dp"
+    android:src="@drawable/ic_filter"
+    android:layout_marginRight="20dp"
+
+    />
+
+
+
+<android.support.design.widget.AppBarLayout
+    android:visibility="gone"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:background="@color/colorPrimaryDark"
+        app:titleTextColor="#fff"
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+        app:popupTheme="@style/MenuStyle">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/username"
+            android:layout_marginLeft="25dp"
+            android:text="Filter"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginStart="25dp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.design.widget.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tablayout"
+        android:background="@color/colorPrimaryDark"
+        app:tabSelectedTextColor="#fff"
+        app:tabIndicatorColor="#fff"
+        app:tabTextColor="#fff"
+        />
+
+</android.support.design.widget.AppBarLayout>
+
+
+
+</LinearLayout>
+-->
+<!--
+<android.support.v4.view.ViewPager
+android:id="@+id/viewPager"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_marginTop="5dp"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+-->

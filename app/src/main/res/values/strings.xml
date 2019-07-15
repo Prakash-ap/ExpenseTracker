@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">ExpenseTracker</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="stats">Stats</string>
+    <string name="trans">Trans</string>
+    <string name="settings">Settings</string>
+    <string name="add_expense_activity">Add Expense Activity</string>
+    <string name="add_income_activity">Add Income Activity</string>
+    <string name="date">Date</string>
+    <string name="account">Account</string>
+    <string name="amount">Amount</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="add_category">Add Category</string>
+    <string name="add">Add</string>
+    <string name="add_account">Add Account</string>
+</resources>

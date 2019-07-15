@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/incomecardview">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:weightSum="1"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/date"
+                    android:textStyle="bold"
+                    android:layout_margin="2dp"
+                    android:textSize="18sp"
+                    android:layout_weight=".7"
+                    />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/incomedate"
+                    android:hint="@string/date"
+                    android:editable="false"
+                    android:layout_weight=".3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:weightSum="1"
+                android:layout_marginTop="10dp"
+                >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight=".7"
+                    android:text="@string/account"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/incomeaccount"
+                    android:hint="@string/account"
+                    android:layout_weight=".3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:weightSum="1"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/category"
+                    android:textStyle="bold"
+                    android:layout_margin="2dp"
+                    android:textSize="18sp"
+                    android:layout_weight=".7"
+                    />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/incomecategory"
+                    android:hint="@string/category"
+                    android:layout_weight=".3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:weightSum="1"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/amount"
+                    android:textStyle="bold"
+                    android:layout_margin="2dp"
+                    android:textSize="18sp"
+                    android:layout_weight=".7"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/incomeamount"
+                    android:hint="@string/amount"
+                    android:inputType="number"
+                    android:layout_weight=".3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:weightSum="1"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/description"
+                    android:textStyle="bold"
+                    android:layout_margin="2dp"
+                    android:textSize="18sp"
+                    android:layout_weight=".7"
+                    />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/incomedescription"
+                    android:hint="@string/description"
+                    android:inputType="textMultiLine"
+                    android:layout_weight=".3"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+     <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/saveincomebutton"
+         android:text="Save"
+         android:layout_below="@+id/incomecardview"
+         android:layout_marginTop="10dp"
+
+    />
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/saveincomebutton"
+        >
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/incomefab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_marginTop="70dp"
+        android:layout_marginRight="20dp"
+        android:background="?android:attr/windowBackground"
+        android:src="@drawable/add"
+        android:visibility="visible"
+        android:layout_marginBottom="50dp"
+
+        app:elevation="6dp"
+        app:fabSize="mini"
+
+        app:pressedTranslationZ="12dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/incomefab1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/saveincomebutton"
+        android:layout_gravity="bottom|end"
+        android:background="?android:attr/windowBackground"
+        android:src="@drawable/catg"
+        android:visibility="invisible"
+        android:layout_marginBottom="100dp"
+        android:layout_marginRight="20dp"
+
+
+        app:elevation="6dp"
+        app:fabSize="mini"
+
+        app:pressedTranslationZ="12dp" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/incomefab2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/saveincomebutton"
+        android:layout_gravity="bottom|end"
+        android:background="?android:attr/windowBackground"
+        android:src="@drawable/accountnew"
+        android:visibility="invisible"
+        android:layout_marginBottom="140dp"
+        android:layout_marginRight="20dp"
+        app:elevation="6dp"
+        app:fabSize="mini"
+
+        app:pressedTranslationZ="12dp" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+
+
+</RelativeLayout>

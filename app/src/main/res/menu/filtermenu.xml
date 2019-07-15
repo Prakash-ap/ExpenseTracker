@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="Weekly"
+        android:icon="@drawable/trans"
+        android:id="@+id/weeklyid"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/monthly"
+        android:icon="@drawable/stats"
+        android:title="Monthly"
+        app:showAsAction="ifRoom"/>
+
+</menu>
