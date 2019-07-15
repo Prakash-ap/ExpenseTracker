@@ -43,6 +43,7 @@ import Database.DatabaseHandler;
 import Model.ExpenseModel;
 import Model.In_Acc_Model;
 import Model.In_Catg_model;
+import Model.In_Chart_Catg;
 
 
 public class AddIncomefragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener {
@@ -78,6 +79,10 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab1,fab2;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    In_Chart_Catg in_chart_catg;
+    ArrayList<In_Chart_Catg>in_chart_catgArrayList;
+  //  ArrayList<ExpenseModel> result;
+    long charincome=0;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -91,6 +96,8 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         amount=view.findViewById(R.id.incomeamount);
         content=view.findViewById(R.id.incomedescription);
         save=view.findViewById(R.id.saveincomebutton);
+
+        //result=new ArrayList<ExpenseModel>();
 
         incomefab=view.findViewById(R.id.incomefab);
         fab1 = (FloatingActionButton)view.findViewById(R.id.incomefab1);
@@ -108,6 +115,8 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
         db=new DatabaseHandler(getContext());
+        in_chart_catg=new In_Chart_Catg();
+        in_chart_catgArrayList=new ArrayList<>();
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +145,7 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                     expenseModelList.add(expenseModel);
                   //  Collections.sort(expenseModelList);
                     db.addExpense(expenseModel);
+                    loadInChartDb();
 
                     Log.d("Insert", "Inserting from Income: " +expenseModel);
 
@@ -144,13 +154,17 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                                                      getContext().startActivity(intent);
                 }
 
+
+
             }
         });
 
          myCalendar = Calendar.getInstance();
+       //  result=db.getAllExpenses();
 
 
        loadaccData();
+
         accountlist=new ArrayList<String >();
         accountlist=new ArrayList<>();
         accountlist.add("Select your Account");
@@ -166,6 +180,13 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
 
         //categorylist=new ArrayList<String>();
         loadData();
+        categorylist=new ArrayList<String>();
+        categorylist.add("Select Category");
+        categorylist.add("Allowance");
+        categorylist.add("Salary");
+        categorylist.add("Petty Cash");
+        categorylist.add("Bonus");
+        categorylist.add("Other");
         catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
         catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         category.setAdapter(catadapter);
@@ -204,6 +225,51 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         return view;
     }
 
+    private void loadInChartDb() {
+        in_chart_catgArrayList = new ArrayList<>();
+        in_chart_catg = new In_Chart_Catg();
+        in_chart_catgArrayList=db.getAllInChartCat();
+
+
+        if(type.equals("income")) {
+
+            in_chart_catg.setIn_chartcat_type(ocategory);
+            in_chart_catg.setOn_chart_amount(oamount);
+
+
+
+
+
+                if(ocategory.equals(in_chart_catg.getIn_chartcat_type())){
+                    //in_chart_catg.setIn_chartcat_type(ocategory);
+                    charincome+=Long.parseLong(in_chart_catg.getOn_chart_amount());
+                    in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+                    db.updateCharIncome(in_chart_catg);
+
+                }else{
+
+                    in_chart_catg.setIn_chartcat_type(ocategory);
+                    in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+
+
+
+                }
+                in_chart_catgArrayList.add(in_chart_catg);
+                db.addChartCat(in_chart_catg);
+
+
+
+            }
+
+
+
+
+
+
+
+
+    }
+
     private void loadaccData() {
         accountlist=new ArrayList<>();
         accountlist.add("Select your Account");
@@ -211,6 +277,7 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         accountlist.add("Cash");
         accountlist.add("Card");
         in_acc_model=new In_Acc_Model();
+
         in_acc_modelArrayList=db.getAllInAccType();
         for (int i=0;i< in_acc_modelArrayList.size();i++){
             in_acc_model=in_acc_modelArrayList.get(i);
@@ -222,6 +289,7 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         accadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,accountlist);
         accadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         account.setAdapter(accadapter);
+
 
 
 
@@ -242,9 +310,6 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
             in_catg_model = in_catg_modelArrayList.get(i);
             cattype = in_catg_model.getIn_cat_type();
             categorylist.add(cattype);
-
-
-
         }
         catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
         catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -327,6 +392,7 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
 
                             dialog.dismiss();
                             Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                            loadData();
 
                         }
 
@@ -334,7 +400,7 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                     }
                 });
                dialog.show();
-               loadData();
+
 
 
 
@@ -367,6 +433,8 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
 
                             dialog1.dismiss();
                             Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                            loadaccData();
+
 
                         }
 
@@ -374,7 +442,6 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                     }
                 });
                 dialog1.show();
-                loadaccData();
 
                 Toast.makeText(getContext(), "Account fab", Toast.LENGTH_SHORT).show();
 

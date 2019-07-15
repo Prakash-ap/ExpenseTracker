@@ -22,8 +22,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".5"
-            android:id="@+id/incomechartrelativelayout"
-            android:layout_marginTop="5dp">
+            android:id="@+id/expensechartrelativelayout"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="50dp"
+            >
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 

@@ -145,14 +145,13 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
             exmyCalendar = Calendar.getInstance();
 
 
+        loadecAccounts();
 
         exaccountlist=new ArrayList<String >();
         exaccountlist.add("Select your Account");
         exaccountlist.add("Account");
         exaccountlist.add("Cash");
         exaccountlist.add("Card");
-        loadecAccounts();
-
        exaccadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,exaccountlist);
         exaccadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             exaccount.setAdapter(exaccadapter);
@@ -160,6 +159,19 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
 
         loadexCatType();
 
+        excategorylist=new ArrayList<String>();
+        excategorylist.add("Select Category");
+        excategorylist.add("Food");
+        excategorylist.add("Social Life");
+        excategorylist.add("Gift");
+        excategorylist.add("Self-development");
+        excategorylist.add("Apparel");
+        excategorylist.add("Culture");
+        excategorylist.add("House-held");
+        excategorylist.add("Health");
+        excategorylist.add("Beauty");
+        excategorylist.add("Education");
+        excategorylist.add("Other");
           excatadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,excategorylist);
         excatadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             excategory.setAdapter(excatadapter);
@@ -217,10 +229,15 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
         ex_catg_model=new Ex_Catg_model();
         ex_catg_modelArrayList=db.getAllExCatType();
         for (int i=0;i<ex_catg_modelArrayList.size();i++){
-            ex_catg_model=new Ex_Catg_model();
+            ex_catg_model=ex_catg_modelArrayList.get(i);
             excattype=ex_catg_model.getEx_cat_type();
             excategorylist.add(excattype);
         }
+
+        excatadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,excategorylist);
+        excatadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        excategory.setAdapter(excatadapter);
+
     }
 
     private void loadecAccounts() {
@@ -232,11 +249,15 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
         ex_acc_model=new Ex_Acc_Model();
         ex_acc_modelArrayList=db.getAllExAccType();
         for (int i=0;i<ex_acc_modelArrayList.size();i++){
-            ex_acc_model=new Ex_Acc_Model();
+            ex_acc_model=ex_acc_modelArrayList.get(i);
             exacctype=ex_acc_model.getEx_acc_type();
             exaccountlist.add(exacctype);
 
         }
+        exaccadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,exaccountlist);
+        exaccadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        exaccount.setAdapter(exaccadapter);
+
     }
 
     private void updateLabel() {
@@ -301,6 +322,7 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
 
                             dialog.dismiss();
                             Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                            loadexCatType();
 
                         }
 
@@ -341,6 +363,7 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
 
                             dialog1.dismiss();
                             Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                            loadecAccounts();
 
                         }
 

@@ -113,14 +113,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (menuItem.getItemId()){
             case R.id.transid:
                 fragment=new TransFragment();
+                floatingActionButton.setVisibility(View.VISIBLE);
+
                 break;
 
             case R.id.stats:
                 fragment=new StatusFragment();
+                floatingActionButton.setVisibility(View.GONE);
+
                 break;
 
             case R.id.settings:
                 fragment=new SettingsFragment();
+                floatingActionButton.setVisibility(View.GONE);
+
                 break;
         }
         return loadFragment(fragment);
