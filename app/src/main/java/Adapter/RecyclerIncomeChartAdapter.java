@@ -13,15 +13,16 @@ import com.example.android.expensetracker.R;
 import java.util.ArrayList;
 
 import Model.ExpenseModel;
+import Model.In_Catg_model;
 import Model.In_Chart_Catg;
 
 public class RecyclerIncomeChartAdapter extends RecyclerView.Adapter<RecyclerIncomeChartAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList<In_Chart_Catg>in_chart_catgArrayList;
+    private ArrayList<In_Catg_model>in_catg_modelArrayList;
 
-    public RecyclerIncomeChartAdapter(Context context, ArrayList<In_Chart_Catg> in_chart_catgArrayList) {
+    public RecyclerIncomeChartAdapter(Context context, ArrayList<In_Catg_model> in_catg_modelArrayList) {
         this.context = context;
-        this.in_chart_catgArrayList = in_chart_catgArrayList;
+        this.in_catg_modelArrayList = in_catg_modelArrayList;
     }
 
     @NonNull
@@ -34,15 +35,15 @@ public class RecyclerIncomeChartAdapter extends RecyclerView.Adapter<RecyclerInc
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerIncomeChartAdapter.MyViewHolder myViewHolder, int i) {
-        In_Chart_Catg in_chart_catg=in_chart_catgArrayList.get(i);
-        myViewHolder.category.setText(in_chart_catg.getIn_chartcat_type());
-        myViewHolder.category_amount.setText(in_chart_catg.getOn_chart_amount());
+        In_Catg_model in_catg_model=in_catg_modelArrayList.get(i);
+        myViewHolder.category.setText(in_catg_model.getIn_cat_type());
+        myViewHolder.category_amount.setText(in_catg_model.getIn_cat_amount());
 
     }
 
     @Override
     public int getItemCount() {
-        return in_chart_catgArrayList.size();
+        return in_catg_modelArrayList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

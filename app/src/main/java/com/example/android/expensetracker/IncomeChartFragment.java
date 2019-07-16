@@ -22,6 +22,7 @@ import Adapter.RecyclerIncomeChartAdapter;
 import Database.DatabaseHandler;
 import Model.ExpenseModel;
 import Model.In_Acc_Model;
+import Model.In_Catg_model;
 import Model.In_Chart_Catg;
 import lecho.lib.hellocharts.model.PieChartData;
 import lecho.lib.hellocharts.model.SliceValue;
@@ -44,6 +45,8 @@ public class IncomeChartFragment extends Fragment {
     long tempincome=0;
     RecyclerView recyclerView;
     RecyclerIncomeChartAdapter recyclerIncomeChartAdapter;
+    In_Catg_model in_catg_model;
+    ArrayList<In_Catg_model>in_catg_modelArrayList;
 
 
 
@@ -71,18 +74,6 @@ public class IncomeChartFragment extends Fragment {
         recyclerView=view.findViewById(R.id.incomechartrelativelayout);
 
 
-
-
-/*
-for(int i=0;i<in_chart_catgArrayList.size();i++){
-    in_chart_catg=in_chart_catgArrayList.get(i);
-    in_chart_catg.setIn_chartcat_type(in_chart_catg.getIn_chartcat_type());
-    in_chart_catg.setOn_chart_amount(in_chart_catg.getOn_chart_amount());
-
-
-}
-*/
-
         List pieData = new ArrayList<>();
         pieData.add(new SliceValue(15, Color.BLUE).setLabel("Salary"));
         pieData.add(new SliceValue(25, Color.GRAY).setLabel("Allowance"));
@@ -95,11 +86,13 @@ for(int i=0;i<in_chart_catgArrayList.size();i++){
         pieChartView.setPieChartData(pieChartData);
 
 
-        in_chart_catgArrayList=new ArrayList<>();
-        in_chart_catgArrayList=db.getAllInChartCat();
+        in_catg_model=new In_Catg_model();
+        in_catg_modelArrayList=new ArrayList<>();
+        in_catg_modelArrayList=db.getAllInType();
 
 
-        recyclerIncomeChartAdapter=new RecyclerIncomeChartAdapter(getContext(),in_chart_catgArrayList);
+
+        recyclerIncomeChartAdapter=new RecyclerIncomeChartAdapter(getContext(),in_catg_modelArrayList);
         final RecyclerView.LayoutManager layoutManager=new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

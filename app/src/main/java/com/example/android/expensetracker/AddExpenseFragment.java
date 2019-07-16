@@ -36,9 +36,11 @@ import java.util.Locale;
 import Database.DatabaseHandler;
 import Model.Ex_Acc_Model;
 import Model.Ex_Catg_model;
+import Model.Ex_Chart_Catg;
 import Model.ExpenseModel;
 import Model.In_Acc_Model;
 import Model.In_Catg_model;
+import Model.In_Chart_Catg;
 
 
 public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSelectedListener,View.OnClickListener {
@@ -65,8 +67,21 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
     Ex_Acc_Model ex_acc_model;
     ArrayList<Ex_Acc_Model>ex_acc_modelArrayList;
     Ex_Catg_model ex_catg_model;
+    Ex_Catg_model ex_catg_model1;
+    Ex_Catg_model ex_catg_model2;
+    Ex_Catg_model ex_catg_model3;
+    Ex_Catg_model ex_catg_model4;
+    Ex_Catg_model ex_catg_model5;
+    Ex_Catg_model ex_catg_model6;
+    Ex_Catg_model ex_catg_model7;
+    Ex_Catg_model ex_catg_model8;
+    Ex_Catg_model ex_catg_model9;
+    Ex_Catg_model ex_catg_model10;
+    Ex_Catg_model ex_catg_model11;
     ArrayList<Ex_Catg_model>ex_catg_modelArrayList;
     String exacctype,excattype;
+    Ex_Chart_Catg ex_chart_catg;
+    ArrayList<Ex_Chart_Catg>ex_chart_catgArrayList;
 
 
 
@@ -83,6 +98,7 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
             examount=view.findViewById(R.id.expenseamount);
             excontent=view.findViewById(R.id.expensedescription);
 
+
         fab=view.findViewById(R.id.expensefab);
         fab1 = (FloatingActionButton)view.findViewById(R.id.expensefab1);
         fab2 = (FloatingActionButton)view.findViewById(R.id.expensefab2);
@@ -95,13 +111,16 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
         fab.setOnClickListener(this);
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
+        db=new DatabaseHandler(getContext());
         ex_acc_modelArrayList=new ArrayList<>();
         ex_catg_modelArrayList=new ArrayList<>();
+        loadexCatType();
+        loadecAccounts();
 
 
 
             save=view.findViewById(R.id.saveexpensebutton);
-           db=new DatabaseHandler(getContext());
+
             save.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -130,6 +149,7 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
                         expenseModelList.add(expenseModel);
                        // Collections.sort(expenseModelList);
                         db.addExpense(expenseModel);
+                        loadExChartCat();
 
 
                         Log.d("Insert", "Inserting from Expense : " +expenseModel);
@@ -159,7 +179,7 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
 
         loadexCatType();
 
-        excategorylist=new ArrayList<String>();
+       /* excategorylist=new ArrayList<String>();
         excategorylist.add("Select Category");
         excategorylist.add("Food");
         excategorylist.add("Social Life");
@@ -171,7 +191,7 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
         excategorylist.add("Health");
         excategorylist.add("Beauty");
         excategorylist.add("Education");
-        excategorylist.add("Other");
+        excategorylist.add("Other");*/
           excatadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,excategorylist);
         excatadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
             excategory.setAdapter(excatadapter);
@@ -210,10 +230,142 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
             return view;
         }
 
+    private void loadExChartCat() {
+
+        ex_chart_catgArrayList = new ArrayList<>();
+        ex_chart_catg = new Ex_Chart_Catg();
+        ex_chart_catgArrayList = db.getAllExChartCat();
+        if (ex_chart_catgArrayList.size() == 0) {
+            ex_chart_catg.setEx_chartcat_type("Food");
+            ex_chart_catg.setEx_chartcat_type("Social Life");
+            ex_chart_catg.setEx_chartcat_type("Gift");
+            ex_chart_catg.setEx_chartcat_type("Self-Development");
+            ex_chart_catg.setEx_chartcat_type("Apparael");
+            ex_chart_catg.setEx_chartcat_type("Culture");
+            ex_chart_catg.setEx_chartcat_type("House");
+            ex_chart_catg.setEx_chartcat_type("Food");
+        }
+    }
+
+
+               /* db.addChartCat(in_chart_catg);
+
+                in_chart_catgArrayList=db.getAllInChartCat();
+
+                for(int i=0;i<in_chart_catgArrayList.size();i++){
+                    in_chart_catg=in_chart_catgArrayList.get(i);
+                    if(in_chart_catg.getIn_chartcat_type().equals(                ocategory)){
+                        charincome+=Long.valueOf(oamount);
+                        in_chart_catg.setIn_chartcat_type(ocategory);
+                        in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+                        db.updateCharIncome(in_chart_catg);
+                    }else{
+                        in_chart_catg.setIn_chartcat_type(ocategory);
+                        in_chart_catg.setOn_chart_amount(oamount);
+                        db.addChartCat(in_chart_catg);*/
+                   /* }
+                }
+
+
+            }else{
+
+                for(int i=0;i<in_chart_catgArrayList.size();i++){
+                    in_chart_catg=in_chart_catgArrayList.get(i);
+
+                    if( in_chart_catg.getIn_chartcat_type().equals(            ocategory)){
+                        charincome=Long.valueOf(in_chart_catg.getOn_chart_amount());
+                        charincome+=Long.valueOf(oamount);
+                        in_chart_catg.setIn_chartcat_type(ocategory);
+                        in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+                        db.updateCharIncome(in_chart_catg);
+                    }else{
+                        in_chart_catg.setIn_chartcat_type(ocategory);
+                        in_chart_catg.setOn_chart_amount(oamount);
+                        db.addChartCat(in_chart_catg);
+
+
+
+                    }
+                *//*in_chart_catg.setIn_chartcat_type(ocategory);
+                in_chart_catg.setOn_chart_amount(oamount);
+                db.addChartCat(in_chart_catg);
+*//*
+                }
+
+            }
+        }*/
+
+
     private void loadexCatType() {
 
         excategorylist=new ArrayList<String>();
-        excategorylist.add("Select Category");
+        ex_catg_model=new Ex_Catg_model();
+        ex_catg_modelArrayList=new ArrayList<>();
+        ex_catg_modelArrayList=db.getAllExCatType();
+        if(ex_catg_modelArrayList.size()==0){
+            ex_catg_model.setEx_cat_type("Select Category");
+            db.addExCatg(ex_catg_model);
+
+            ex_catg_model1=new Ex_Catg_model();
+            ex_catg_model1.setEx_cat_type("Food");
+            db.addExCatg(ex_catg_model1);
+
+            ex_catg_model2=new Ex_Catg_model();
+            ex_catg_model2.setEx_cat_type("Social Life");
+            db.addExCatg(ex_catg_model2);
+
+            ex_catg_model3=new Ex_Catg_model();
+            ex_catg_model3.setEx_cat_type("Gift");
+            db.addExCatg(ex_catg_model3);
+
+            ex_catg_model4=new Ex_Catg_model();
+            ex_catg_model4.setEx_cat_type("Self-development");
+            db.addExCatg(ex_catg_model4);
+
+            ex_catg_model5=new Ex_Catg_model();
+            ex_catg_model5.setEx_cat_type("Apparel");
+            db.addExCatg(ex_catg_model5);
+
+            ex_catg_model6=new Ex_Catg_model();
+            ex_catg_model6.setEx_cat_type("Culture");
+            db.addExCatg(ex_catg_model6);
+
+            ex_catg_model7=new Ex_Catg_model();
+            ex_catg_model7.setEx_cat_type("House-held");
+            db.addExCatg(ex_catg_model7);
+
+            ex_catg_model8=new Ex_Catg_model();
+            ex_catg_model8.setEx_cat_type("Health");
+            db.addExCatg(ex_catg_model8);
+
+            ex_catg_model9=new Ex_Catg_model();
+            ex_catg_model9.setEx_cat_type("Beauty");
+            db.addExCatg(ex_catg_model9);
+
+            ex_catg_model10=new Ex_Catg_model();
+            ex_catg_model10.setEx_cat_type("Education");
+            db.addExCatg(ex_catg_model10);
+
+            ex_catg_model11=new Ex_Catg_model();
+            ex_catg_model11.setEx_cat_type("Other");
+            db.addExCatg(ex_catg_model11);
+
+
+        }else{
+
+            ex_catg_model=new Ex_Catg_model();
+            ex_catg_modelArrayList=db.getAllExCatType();
+            for (int i=0;i<ex_catg_modelArrayList.size();i++){
+                ex_catg_model=ex_catg_modelArrayList.get(i);
+                excattype=ex_catg_model.getEx_cat_type();
+                excategorylist.add(excattype);
+            }
+            excatadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,excategorylist);
+            excatadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            excategory.setAdapter(excatadapter);
+
+        }
+        /*excategorylist.add("Select Category");
         excategorylist.add("Food");
         excategorylist.add("Social Life");
         excategorylist.add("Gift");
@@ -225,18 +377,10 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
         excategorylist.add("Beauty");
         excategorylist.add("Education");
         excategorylist.add("Other");
+*/
 
-        ex_catg_model=new Ex_Catg_model();
-        ex_catg_modelArrayList=db.getAllExCatType();
-        for (int i=0;i<ex_catg_modelArrayList.size();i++){
-            ex_catg_model=ex_catg_modelArrayList.get(i);
-            excattype=ex_catg_model.getEx_cat_type();
-            excategorylist.add(excattype);
-        }
 
-        excatadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,excategorylist);
-        excatadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        excategory.setAdapter(excatadapter);
+
 
     }
 
@@ -318,11 +462,13 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
                         }else {
                             ex_catg_model = new Ex_Catg_model();
                             ex_catg_model.setEx_cat_type(catval);
-                            db.addExCatg(ex_catg_model);
 
-                            dialog.dismiss();
-                            Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
-                            loadexCatType();
+                                db.addExCatg(ex_catg_model);
+
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                                loadexCatType();
+
 
                         }
 

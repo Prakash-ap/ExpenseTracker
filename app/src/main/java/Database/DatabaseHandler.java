@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import Model.Ex_Acc_Model;
 import Model.Ex_Catg_model;
+import Model.Ex_Chart_Catg;
 import Model.ExpenseModel;
 import Model.In_Acc_Model;
 import Model.In_Catg_model;
@@ -44,6 +45,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String EX_KEY_ACCOUNT="ex_account";
     private static final String IN_KEY_CAT="in_chart_catg";
     private static final String IN_KEY_AMOUNT="in_chart_amount";
+    private static final String EX_KEY_CAT="ex_chart_acc";
+    private static final String EX_KEY_AMT="ex_chart_amt";
+
+    ArrayList<In_Chart_Catg>in_chart_catgArrayList;
+
 
 
 
@@ -59,12 +65,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_ACCOUNT+" TEXT,"+KEY_CATEGORY+ " TEXT,"+ KEY_AMOUNT + " TEXT,"+KEY_DESCRIPTION+" TEXT,"+KEY_TYPE+" TEXT,"+KEY_WEEK_OF_MONTH+" TEXT,"+KEY_MONTH+" TEXT,"+KEY_YEAR+ " TEXT" +")";
 
 
-        String CREATE_IN_CAT_TABNAME=" CREATE TABLE "+IN_CATG_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+IN_KEY_CATEGORY+ " TEXT" +")";
-        String CREATE_EX_CAT_TABNAME=" CREATE TABLE "+EX_CATG_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+EX_KEY_CATEGORY+ " TEXT" +")";
+        String CREATE_IN_CAT_TABNAME=" CREATE TABLE "+IN_CATG_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+IN_KEY_CATEGORY+ " TEXT," + IN_KEY_AMOUNT+" TEXT "+")";
+        String CREATE_EX_CAT_TABNAME=" CREATE TABLE "+EX_CATG_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+EX_KEY_CATEGORY+ " TEXT "+")";
         String CREATE_IN_ACC_TABNAME=" CREATE TABLE "+IN_ACC_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+IN_KEY_ACCOUNT+ " TEXT" +")";
         String CREATE_EX_ACC_TABNAME=" CREATE TABLE "+EX_ACC_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+EX_KEY_ACCOUNT+ " TEXT" +")";
-        String CREATE__IN_CATCAHRT_TABNAME=" CREATE TABLE "+IN_CAT_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+IN_KEY_CAT+ " TEXT," + IN_KEY_AMOUNT+" TEXT "+")";
-       // String CREATE_EX_CATCHART_TABNAME=" CREATE TABLE "+EX_CAT_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+EX_KEY_ACCOUNT+ " TEXT" +")";
+        String CREATE__IN_CATCAHRT_TABNAME=" CREATE TABLE "+IN_CAT_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+IN_KEY_CAT+ " TEXT  "+")";
+        String CREATE_EX_CATCHART_TABNAME=" CREATE TABLE "+EX_CAT_TABLE_NAME + "("+KEY_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"+EX_KEY_CAT+ " TEXT "+")";
+
 
 
 
@@ -74,6 +81,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_IN_ACC_TABNAME);
         db.execSQL(CREATE_EX_ACC_TABNAME);
         db.execSQL(CREATE__IN_CATCAHRT_TABNAME);
+        db.execSQL(CREATE_EX_CATCHART_TABNAME);
 
 
     }
@@ -86,6 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(" DROP TABLE IF EXISTS "+IN_ACC_TABLE_NAME);
         db.execSQL(" DROP TABLE IF EXISTS "+EX_ACC_TABLE_NAME);
         db.execSQL(" DROP TABLE IF EXISTS "+IN_CATG_TABLE_NAME);
+        db.execSQL(" DROP TABLE IF EXISTS "+EX_CAT_TABLE_NAME);
 
         onCreate(db);
     }
@@ -111,18 +120,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void addEXChartCat(Ex_Chart_Catg ex_chart_catg){
+        SQLiteDatabase db=this.getWritableDatabase();
+
+           ContentValues contentValues = new ContentValues();
+
+
+           contentValues.put(EX_KEY_CAT, ex_chart_catg.getEx_chartcat_type());
+           contentValues.put(EX_KEY_AMT, ex_chart_catg.getEx_chart_amount());
+
+
+           db.insert(EX_CAT_TABLE_NAME, null, contentValues);
+           db.close();
+
+    }
     public void addChartCat(In_Chart_Catg in_chart_catg){
         SQLiteDatabase db=this.getWritableDatabase();
 
-        ContentValues contentValues=new ContentValues();
-
-        contentValues.put(IN_KEY_CAT,in_chart_catg.getIn_chartcat_type());
-        contentValues.put(IN_KEY_AMOUNT,in_chart_catg.getOn_chart_amount());
+        ContentValues contentValues = new ContentValues();
 
 
-        db.insert(IN_CAT_TABLE_NAME,null,contentValues);
+        contentValues.put(IN_KEY_CAT, in_chart_catg.getIn_chartcat_type());
+        contentValues.put(IN_KEY_AMOUNT, in_chart_catg.getOn_chart_amount());
+
+
+        db.insert(IN_CAT_TABLE_NAME, null, contentValues);
         db.close();
+
     }
+
 
     public void addInCatg(In_Catg_model in_catg_model){
         SQLiteDatabase db=this.getWritableDatabase();
@@ -130,6 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues contentValues1=new ContentValues();
 
         contentValues1.put(IN_KEY_CATEGORY,in_catg_model.getIn_cat_type());
+        contentValues1.put(IN_KEY_AMOUNT,in_catg_model.getIn_cat_amount());
 
 
         db.insert(IN_CATG_TABLE_NAME,null,contentValues1);
@@ -266,6 +293,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                 in_catg_model.setId(Integer.parseInt(cursor.getString(0)));
                 in_catg_model.setIn_cat_type(cursor.getString(1));
+                in_catg_model.setIn_cat_amount(cursor.getString(2));
 
                 in_catg_models.add(in_catg_model);
 
@@ -376,6 +404,31 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
+    public ArrayList<Ex_Chart_Catg>getAllExChartCat(){
+        ArrayList<Ex_Chart_Catg>ex_chart_catgArrayList=new ArrayList<>();
+
+        String selectAll=" SELECT * FROM "+EX_CAT_TABLE_NAME;
+        SQLiteDatabase db=this.getReadableDatabase();
+        Cursor cursor=db.rawQuery(selectAll,null);
+
+        if(cursor.moveToFirst()){
+            do{
+                Ex_Chart_Catg ex_chart_catg=new Ex_Chart_Catg();
+
+                ex_chart_catg.setId(Integer.parseInt(cursor.getString(0)));
+                ex_chart_catg.setEx_chartcat_type(cursor.getString(1));
+                ex_chart_catg.setEx_chart_amount(cursor.getString(2));
+
+                ex_chart_catgArrayList.add(ex_chart_catg);
+
+            }while (cursor.moveToNext());
+
+        }
+        return ex_chart_catgArrayList;
+
+
+    }
+
 
     public int updateExpense(ExpenseModel expenseModel){
         SQLiteDatabase db=this.getWritableDatabase();
@@ -395,14 +448,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public int updateCharIncome(In_Chart_Catg in_chart_catg){
+    public int updateCharIncome(In_Catg_model in_catg_model){
         SQLiteDatabase db=this.getWritableDatabase();
 
         ContentValues contentValues=new ContentValues();
-        contentValues.put(IN_KEY_AMOUNT,in_chart_catg.getOn_chart_amount());
+        contentValues.put(IN_KEY_AMOUNT,in_catg_model.getIn_cat_amount());
+
+        String where = KEY_ID +"="+in_catg_model.getId() ;
 
 
-        return db.update(IN_CAT_TABLE_NAME,contentValues,KEY_ID+"=?",new String[]{String.valueOf(in_chart_catg.getId())});
+        return db.update(IN_CAT_TABLE_NAME,contentValues,where,null);
+
+    }
+
+    public int updateEXChar(Ex_Chart_Catg ex_chart_catg){
+        SQLiteDatabase db=this.getWritableDatabase();
+
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(EX_KEY_AMT,ex_chart_catg.getEx_chart_amount());
+
+        String where = KEY_ID +"="+ex_chart_catg.getId() ;
+
+
+        return db.update(EX_CAT_TABLE_NAME,contentValues,where,null);
 
     }
 

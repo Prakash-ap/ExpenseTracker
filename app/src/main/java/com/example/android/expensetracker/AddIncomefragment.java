@@ -56,6 +56,13 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
      List<String>categorylist;
      ArrayList<In_Catg_model>in_catg_modelArrayList;
      In_Catg_model in_catg_model;
+     In_Catg_model in_catg_model1;
+     In_Catg_model in_catg_model2;
+     In_Catg_model in_catg_model3;
+     In_Catg_model in_catg_model4;
+     In_Catg_model in_catg_model5;
+     In_Catg_model in_catg_model6;
+     In_Catg_model in_catg_model7;
      private Context context;
      String odate,oamount,ocontent,oaccount,ocategory;
      Button save;
@@ -72,14 +79,22 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
     ArrayAdapter<String> catadapter;
     int week,year;
     String cattype,acctype;
+    String catamount;
     String month;
     FloatingActionButton incomefab;
     ArrayList<In_Acc_Model>in_acc_modelArrayList;
     In_Acc_Model in_acc_model;
+    In_Acc_Model in_acc_model1;
+    In_Acc_Model in_acc_model2;
+    In_Acc_Model in_acc_model3;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab,fab1,fab2;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     In_Chart_Catg in_chart_catg;
+    In_Chart_Catg in_chart_catg1;
+    In_Chart_Catg in_chart_catg2;
+    In_Chart_Catg in_chart_catg3;
+    In_Chart_Catg in_chart_catg4;
     ArrayList<In_Chart_Catg>in_chart_catgArrayList;
   //  ArrayList<ExpenseModel> result;
     long charincome=0;
@@ -115,8 +130,27 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         fab1.setOnClickListener(this);
         fab2.setOnClickListener(this);
         db=new DatabaseHandler(getContext());
-        in_chart_catg=new In_Chart_Catg();
-        in_chart_catgArrayList=new ArrayList<>();
+       /* in_chart_catg=new In_Chart_Catg();
+        in_chart_catgArrayList=new ArrayList<>();*/
+       loadcat();
+
+
+        loadaccData();
+
+        accadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,accountlist);
+        accadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        account.setAdapter(accadapter);
+
+
+
+        //categorylist=new ArrayList<String>();
+        loadData();
+
+        catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
+        catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        category.setAdapter(catadapter);
+
+
 
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -145,7 +179,7 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                     expenseModelList.add(expenseModel);
                   //  Collections.sort(expenseModelList);
                     db.addExpense(expenseModel);
-                    loadInChartDb();
+                  loadcat();
 
                     Log.d("Insert", "Inserting from Income: " +expenseModel);
 
@@ -162,34 +196,6 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
          myCalendar = Calendar.getInstance();
        //  result=db.getAllExpenses();
 
-
-       loadaccData();
-
-        accountlist=new ArrayList<String >();
-        accountlist=new ArrayList<>();
-        accountlist.add("Select your Account");
-        accountlist.add("Account");
-        accountlist.add("Cash");
-        accountlist.add("Card");
-
-        accadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,accountlist);
-        accadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        account.setAdapter(accadapter);
-
-
-
-        //categorylist=new ArrayList<String>();
-        loadData();
-        categorylist=new ArrayList<String>();
-        categorylist.add("Select Category");
-        categorylist.add("Allowance");
-        categorylist.add("Salary");
-        categorylist.add("Petty Cash");
-        categorylist.add("Bonus");
-        categorylist.add("Other");
-        catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
-        catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        category.setAdapter(catadapter);
 
 
       
@@ -225,99 +231,211 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
         return view;
     }
 
-    private void loadInChartDb() {
-        in_chart_catgArrayList = new ArrayList<>();
-        in_chart_catg = new In_Chart_Catg();
-        in_chart_catgArrayList=db.getAllInChartCat();
+    private void loadcat() {
+        categorylist=new ArrayList<String>();
+        in_catg_model=new In_Catg_model();
+        in_catg_modelArrayList=new ArrayList<>();
+        in_catg_modelArrayList=db.getAllInType();
+
+        if (in_catg_modelArrayList.size() == 0) {
+            in_catg_model = new In_Catg_model();
+            in_catg_model.setIn_cat_type("Allowance");
+            in_catg_model.setIn_cat_amount(String.valueOf(0));
+            db.addInCatg(in_catg_model);
+
+            in_catg_model2 = new In_Catg_model();
+            in_catg_model2.setIn_cat_type("Salary");
+            in_catg_model2.setIn_cat_amount(String.valueOf(0));
+            db.addInCatg(in_catg_model2);
+
+            in_catg_model3 = new In_Catg_model();
+            in_catg_model3.setIn_cat_type("Petty Cash");
+            in_catg_model3.setIn_cat_amount(String.valueOf(0));
+            db.addInCatg(in_catg_model3);
+
+            in_catg_model4 = new In_Catg_model();
+            in_catg_model4.setIn_cat_type("Bonus");
+            in_catg_model4.setIn_cat_amount(String.valueOf(0));
+            db.addInCatg(in_catg_model4);
+
+            in_catg_model5 = new In_Catg_model();
+            in_catg_model5.setIn_cat_type("Other");
+            in_catg_model5.setIn_cat_amount(String.valueOf(0));
+            db.addInCatg(in_catg_model5);
+
+            in_catg_modelArrayList=db.getAllInType();
+            for(int i=0;i<in_catg_modelArrayList.size();i++){
+                in_catg_model=in_catg_modelArrayList.get(i);
+                cattype=in_catg_model.getIn_cat_type();
+                catamount=in_catg_model.getIn_cat_amount();
+
+                categorylist.add(cattype);
+            }
 
 
-        if(type.equals("income")) {
-
-            in_chart_catg.setIn_chartcat_type(ocategory);
-            in_chart_catg.setOn_chart_amount(oamount);
-
+            catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
+            catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            category.setAdapter(catadapter);
 
 
 
+        }
+        else{
 
-                if(ocategory.equals(in_chart_catg.getIn_chartcat_type())){
-                    //in_chart_catg.setIn_chartcat_type(ocategory);
-                    charincome+=Long.parseLong(in_chart_catg.getOn_chart_amount());
-                    in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
-                    db.updateCharIncome(in_chart_catg);
+            in_catg_model=new In_Catg_model();
+            in_catg_modelArrayList=new ArrayList<>();
+            in_catg_modelArrayList=db.getAllInType();
+            for(int i=0;i<in_catg_modelArrayList.size();i++){
+                in_catg_model=in_catg_modelArrayList.get(i);
 
-                }else{
+                cattype=in_catg_model.getIn_cat_type();
+                catamount=in_catg_model.getIn_cat_amount();
 
-                    in_chart_catg.setIn_chartcat_type(ocategory);
-                    in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+                in_catg_model.setIn_cat_type(cattype);
+                in_catg_model.setIn_cat_amount(catamount);
 
-
-
-                }
-                in_chart_catgArrayList.add(in_chart_catg);
-                db.addChartCat(in_chart_catg);
-
-
+                db.addInCatg(in_catg_model);
+                categorylist.add(cattype);
 
             }
 
 
+            catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
+            catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            category.setAdapter(catadapter);
 
-
-
-
-
-
+        }
     }
+
+
+    // private void loadInChartDb() {
+
+
+
+
+        /*in_chart_catgArrayList = new ArrayList<>();
+
+        in_chart_catgArrayList=db.getAllInChartCat();
+        if(in_chart_catgArrayList.size()==0) {
+            in_chart_catg = new In_Chart_Catg();
+            in_chart_catg.setIn_chartcat_type("Allowance");
+            in_chart_catg.setOn_chart_amount("0");
+            db.addChartCat(in_chart_catg);
+            in_chart_catg1 = new In_Chart_Catg();
+            in_chart_catg1.setIn_chartcat_type("Salary");
+            in_chart_catg1.setOn_chart_amount("0");
+            db.addChartCat(in_chart_catg1);
+
+            in_chart_catg2 = new In_Chart_Catg();
+            in_chart_catg2.setIn_chartcat_type("Petty Cash");
+            in_chart_catg2.setOn_chart_amount("0");
+            db.addChartCat(in_chart_catg2);
+
+            in_chart_catg3 = new In_Chart_Catg();
+            in_chart_catg3.setIn_chartcat_type("Bonus");
+            in_chart_catg3.setOn_chart_amount("0");
+            db.addChartCat(in_chart_catg3);
+
+
+            in_chart_catg4 = new In_Chart_Catg();
+            in_chart_catg4.setIn_chartcat_type("Other");
+            in_chart_catg4.setOn_chart_amount("0");
+            db.addChartCat(in_chart_catg4);*/
+
+    /* {
+            in_chart_catgArrayList=db.getAllInChartCat();
+
+            for(int i=0;i<in_chart_catgArrayList.size();i++){
+                in_chart_catg=in_chart_catgArrayList.get(i);
+                if(in_chart_catg.getIn_chartcat_type().equals(ocategory)){
+                    charincome+=Long.valueOf(oamount);
+                    in_chart_catg.setIn_chartcat_type(ocategory);
+                    in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+                    db.updateCharIncome(in_chart_catg);
+                }else{
+                    in_chart_catg.setIn_chartcat_type(ocategory);
+                    in_chart_catg.setOn_chart_amount(oamount);
+                    db.addChartCat(in_chart_catg);
+                }
+            }
+
+
+        }*//*else{
+
+            for(int i=0;i<in_chart_catgArrayList.size();i++){
+                in_chart_catg=in_chart_catgArrayList.get(i);
+
+                if( in_chart_catg.getIn_chartcat_type().equals(ocategory)){
+                    charincome=Long.valueOf(in_chart_catg.getOn_chart_amount());
+                    charincome+=Long.valueOf(oamount);
+                    in_chart_catg.setIn_chartcat_type(ocategory);
+                    in_chart_catg.setOn_chart_amount(String.valueOf(charincome));
+                    db.updateCharIncome(in_chart_catg);
+                }else{
+                    in_chart_catg.setIn_chartcat_type(ocategory);
+                    in_chart_catg.setOn_chart_amount(oamount);
+                    db.addChartCat(in_chart_catg);
+
+
+
+                }*/
+                /*in_chart_catg.setIn_chartcat_type(ocategory);
+                in_chart_catg.setOn_chart_amount(oamount);
+                db.addChartCat(in_chart_catg);
+*/
+
+
+
+  //  }
+
 
     private void loadaccData() {
-        accountlist=new ArrayList<>();
-        accountlist.add("Select your Account");
-        accountlist.add("Account");
-        accountlist.add("Cash");
-        accountlist.add("Card");
-        in_acc_model=new In_Acc_Model();
+        categorylist=new ArrayList<String>();
 
-        in_acc_modelArrayList=db.getAllInAccType();
-        for (int i=0;i< in_acc_modelArrayList.size();i++){
-            in_acc_model=in_acc_modelArrayList.get(i);
-            acctype=in_acc_model.getIn_acc_type();
-            accountlist.add(acctype);
+        accountlist = new ArrayList<>();
+        in_acc_model = new In_Acc_Model();
+        in_acc_modelArrayList = new ArrayList<>();
+        in_acc_modelArrayList = db.getAllInAccType();
+
+
+            for (int i = 0; i < in_acc_modelArrayList.size(); i++) {
+                in_acc_model = in_acc_modelArrayList.get(i);
+                acctype = in_acc_model.getIn_acc_type();
+                accountlist.add(acctype);
+
+
+            }
+            accadapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, accountlist);
+            accadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            account.setAdapter(accadapter);
 
 
         }
-        accadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,accountlist);
-        accadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        account.setAdapter(accadapter);
 
-
-
-
-    }
 
     private void loadData() {
+        categorylist=new ArrayList<String>();
+        in_catg_model=new In_Catg_model();
+        in_catg_modelArrayList=new ArrayList<>();
+        in_catg_modelArrayList=db.getAllInType();
 
-       categorylist=new ArrayList<String>();
-        categorylist.add("Select Category");
-        categorylist.add("Allowance");
-        categorylist.add("Salary");
-        categorylist.add("Petty Cash");
-        categorylist.add("Bonus");
-        categorylist.add("Other");
-        in_catg_model = new In_Catg_model();
-        in_catg_modelArrayList = db.getAllInType();
-        for (int i = 0; i < in_catg_modelArrayList.size(); i++) {
-            in_catg_model = in_catg_modelArrayList.get(i);
-            cattype = in_catg_model.getIn_cat_type();
-            categorylist.add(cattype);
+            for(int i=0;i<in_catg_modelArrayList.size();i++){
+                in_catg_model=in_catg_modelArrayList.get(i);
+                cattype=in_catg_model.getIn_cat_type();
+                    categorylist.add(cattype);
+                    }
+            catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
+            catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+            category.setAdapter(catadapter);
+
+
         }
-        catadapter=new ArrayAdapter<String >(getContext(),android.R.layout.simple_spinner_item,categorylist);
-        catadapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        category.setAdapter(catadapter);
 
 
 
-    }
+
+
+
 
     private void updateLabel() {
         String myFormat = "MM/dd/yyyy"; //In which you need put here
@@ -388,12 +506,14 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                         }else {
                             in_catg_model = new In_Catg_model();
                             in_catg_model.setIn_cat_type(catval);
-                            db.addInCatg(in_catg_model);
+                            in_catg_modelArrayList=new ArrayList<>();
+                            in_catg_modelArrayList=db.getAllInType();
+                          //  in_catg_model.setIn_cat_type();
 
-                            dialog.dismiss();
-                            Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
-                            loadData();
-
+                                db.addInCatg(in_catg_model);
+                                dialog.dismiss();
+                                Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                                loadData();
                         }
 
 
@@ -429,11 +549,15 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
                         }else {
                             in_acc_model = new In_Acc_Model();
                             in_acc_model.setIn_acc_type(accval);
-                            db.addInAcc(in_acc_model);
+                            if(accval.matches(in_acc_model.getIn_acc_type())){
+                                Toast.makeText(getActivity(), "Can't be Added", Toast.LENGTH_SHORT).show();
+                            }else {
+                                db.addInAcc(in_acc_model);
 
-                            dialog1.dismiss();
-                            Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
-                            loadaccData();
+                                dialog1.dismiss();
+                                Toast.makeText(getContext(), "Successfully Added", Toast.LENGTH_SHORT).show();
+                                loadaccData();
+                            }
 
 
                         }
@@ -471,5 +595,10 @@ public class AddIncomefragment extends Fragment implements AdapterView.OnItemSel
             fab2.setClickable(true);
             isFabOpen = true;
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
