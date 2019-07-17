@@ -65,6 +65,10 @@ public class AddExpenseFragment extends Fragment implements AdapterView.OnItemSe
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private Boolean isFabOpen = false;
     Ex_Acc_Model ex_acc_model;
+    Ex_Acc_Model ex_acc_model1;
+    Ex_Acc_Model ex_acc_model2;
+    Ex_Acc_Model ex_acc_model3;
+    Ex_Acc_Model ex_acc_model4;
     ArrayList<Ex_Acc_Model>ex_acc_modelArrayList;
     Ex_Catg_model ex_catg_model;
     Ex_Catg_model ex_catg_model1;
